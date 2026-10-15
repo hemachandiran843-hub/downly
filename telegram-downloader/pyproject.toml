@@ -1,0 +1,39 @@
+[project]
+name = "telegram-downloader"
+version = "1.0.0"
+description = "Telegram bot that downloads media and files from links users send it"
+requires-python = ">=3.11"
+readme = "README.md"
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+testpaths = ["tests"]
+asyncio_mode = "auto"
+addopts = "-ra -q"
+filterwarnings = ["ignore::DeprecationWarning"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+exclude = [".venv", "data", "downloads", "temp"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "N", "UP", "B", "C4", "SIM", "PL"]
+ignore = [
+    "PLR0911", # too many return statements
+    "PLR0912", # too many branches
+    "PLR0915", # too many statements
+    "PLR2004", # magic values in comparisons
+    "PLC0415", # local imports are used deliberately for optional/binary deps
+    "PLR0913", # orchestrator helpers take many keyword-only arguments by design
+    "PLR0917", # positional-argument count, same reasoning
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["PLR2004", "S101", "N806"]
+
+[tool.mypy]
+python_version = "3.11"
+warn_unused_ignores = false
+ignore_missing_imports = true
+files = ["bot", "run.py"]

@@ -1,0 +1,26 @@
+services:
+  telegram-downloader:
+    build: .
+    image: telegram-downloader:latest
+    container_name: telegram-downloader
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      # Keep paths inside the container so the volumes below are used.
+      DATABASE_PATH: /app/data/bot.db
+      DATA_DIR: /app/data
+      DOWNLOADS_DIR: /app/downloads
+      TEMP_DIR: /app/temp
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+    volumes:
+      - ./data:/app/data
+      - ./downloads:/app/downloads
+      - ./temp:/app/temp
+    # Downloads are network bound; keep it small and predictable.
+    stop_grace_period: 30s
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
